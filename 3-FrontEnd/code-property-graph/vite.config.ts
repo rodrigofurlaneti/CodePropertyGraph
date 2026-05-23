@@ -9,6 +9,8 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:5000',
         changeOrigin: true,
+        secure: false,          // aceita certificado auto-assinado em dev
+        followRedirects: true,  // segue o redirect HTTP→HTTPS do UseHttpsRedirection
       },
     },
   },

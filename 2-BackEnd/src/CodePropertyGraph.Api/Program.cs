@@ -36,7 +36,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CodePropertyGraph API v1"));
 }
 
-app.UseHttpsRedirection();
+// Em desenvolvimento o proxy do Vite aponta para HTTP (localhost:5000).
+// UseHttpsRedirection redirecionaria para HTTPS antes da resposta chegar,
+// quebrando a comunicação proxy → API. Só habilita em produção.
+if (!app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
+
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();

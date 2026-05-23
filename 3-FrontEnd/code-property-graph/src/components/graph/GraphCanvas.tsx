@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import {
   ReactFlow, Background, Controls, MiniMap,
   useNodesState, useEdgesState, addEdge,
@@ -75,8 +75,14 @@ export function GraphCanvas({ data, onNodeClick }: GraphCanvasProps) {
   const initialNodes = useMemo(() => buildFlowNodes(data.nodes), [data.nodes])
   const initialEdges = useMemo(() => buildFlowEdges(data.edges), [data.edges])
 
-  const [nodes, , onNodesChange] = useNodesState(initialNodes)
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+
+  // Sincroniza o estado interno do React Flow quando os dados externos mudam.
+  // useNodesState/useEdgesState só usam o valor inicial na montagem; sem esse
+  // efeito, refetch e mudanças de filtro não atualizam o canvas.
+  useEffect(() => { setNodes(initialNodes) }, [initialNodes, setNodes])
+  useEffect(() => { setEdges(initialEdges) }, [initialEdges, setEdges])
 
   const onConnect = useCallback(
     (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
