@@ -4,6 +4,9 @@
 
 ---
 
+![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/Project.jpg?raw=true)
+
+
 ## Visão Geral
 
 O **Code Property Graph** é um sistema full-stack que mapeia qualquer projeto de software para um modelo de grafo relacional. Combinando o **Paradigma Relacional** (SQL Server + EF Core) com a **visão de Grafo** (Knowledge Graph), ele permite que você navegue pela arquitetura de código de forma intuitiva — sem precisar mudar de stack.

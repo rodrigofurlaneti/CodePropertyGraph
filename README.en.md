@@ -4,6 +4,10 @@
 
 ---
 
+![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/Project.jpg?raw=true)
+
+---
+
 ## Overview
 
 **Code Property Graph** is a full-stack system that maps any software project into a relational graph model. By combining the **Relational Paradigm** (SQL Server + EF Core) with the **Graph View** (Knowledge Graph), it lets you navigate code architecture intuitively — without changing your existing stack.
