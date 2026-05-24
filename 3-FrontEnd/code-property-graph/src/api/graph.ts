@@ -1,4 +1,4 @@
-import type { GraphData, ArchitectureViolation, Layer, Project, CodeElement, Namespace, Directory } from '../types'
+import type { GraphData, ArchitectureViolation, Layer, Project, CodeElement, Namespace, Directory, ApiEndpoint, HandlerContract } from '../types'
 import { apiClient } from './client'
 
 // Graph
@@ -62,4 +62,21 @@ export const codeElementsApi = {
     await apiClient.put(`/codeelements/${id}`, data)
   },
   delete: async (id: number): Promise<void> => { await apiClient.delete(`/codeelements/${id}`) },
+}
+
+// ApiEndpoints
+export const apiEndpointsApi = {
+  getAll: async (): Promise<ApiEndpoint[]> => (await apiClient.get<ApiEndpoint[]>('/apiendpoints')).data,
+  create: async (data: Omit<ApiEndpoint, 'id' | 'controllerName' | 'inputName' | 'outputName'>): Promise<number> =>
+    (await apiClient.post<number>('/apiendpoints', data)).data,
+  delete: async (id: number): Promise<void> => { await apiClient.delete(`/apiendpoints/${id}`) },
+}
+
+// HandlerContracts
+export const handlerContractsApi = {
+  getAll: async (): Promise<HandlerContract[]> => (await apiClient.get<HandlerContract[]>('/handlercontracts')).data,
+  create: async (data: Pick<HandlerContract, 'handlerId' | 'inputId' | 'outputId'>): Promise<void> => {
+    await apiClient.post('/handlercontracts', data)
+  },
+  delete: async (handlerId: number): Promise<void> => { await apiClient.delete(`/handlercontracts/${handlerId}`) },
 }

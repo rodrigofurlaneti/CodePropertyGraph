@@ -7,6 +7,7 @@ import { ViolationsPage } from './pages/ViolationsPage'
 import {
   LayersPage, ProjectsPage, NamespacesPage,
   DirectoriesPage, CodeElementsPage,
+  ApiEndpointsPage, HandlerContractsPage,
 } from './pages/EntityPages'
 
 const queryClient = new QueryClient({
@@ -31,6 +32,8 @@ export function App() {
             <Route path="namespaces" element={<NamespacesPage />} />
             <Route path="directories" element={<DirectoriesPage />} />
             <Route path="code-elements" element={<CodeElementsPage />} />
+            <Route path="api-endpoints" element={<ApiEndpointsPage />} />
+            <Route path="handler-contracts" element={<HandlerContractsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

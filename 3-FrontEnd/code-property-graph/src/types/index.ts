@@ -75,7 +75,7 @@ export interface GraphEdge {
   id: string
   source: string
   target: string
-  edgeType: 'IMPLEMENTS' | 'DEPENDS_ON'
+  edgeType: 'IMPLEMENTS' | 'DEPENDS_ON' | 'HTTP_INPUT' | 'HTTP_OUTPUT' | 'HANDLER_INPUT' | 'HANDLER_OUTPUT'
   label: string
   isDirect: boolean
 }
@@ -83,6 +83,29 @@ export interface GraphEdge {
 export interface GraphData {
   nodes: GraphNode[]
   edges: GraphEdge[]
+}
+
+export interface ApiEndpoint {
+  id: number
+  controllerId: number
+  controllerName: string
+  methodName: string
+  httpVerb: string
+  route: string
+  inputId?: number
+  inputName?: string
+  outputId?: number
+  outputName?: string
+  roles?: string
+}
+
+export interface HandlerContract {
+  handlerId: number
+  handlerName: string
+  inputId: number
+  inputName: string
+  outputId: number
+  outputName: string
 }
 
 export interface ArchitectureViolation {

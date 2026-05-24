@@ -44,26 +44,38 @@ function buildFlowNodes(graphNodes: GraphNode[]): Node[] {
   })
 }
 
+const EDGE_STYLE: Record<string, { stroke: string; dash?: string; width: number }> = {
+  IMPLEMENTS:     { stroke: '#10b981', width: 2 },
+  DEPENDS_ON:     { stroke: '#6366f1', dash: '5,3', width: 1.5 },
+  HTTP_INPUT:     { stroke: '#f97316', dash: '4,2', width: 1.5 },
+  HTTP_OUTPUT:    { stroke: '#fb923c', dash: '4,2', width: 1.5 },
+  HANDLER_INPUT:  { stroke: '#8b5cf6', dash: '3,3', width: 1.5 },
+  HANDLER_OUTPUT: { stroke: '#a78bfa', dash: '3,3', width: 1.5 },
+}
+
 function buildFlowEdges(graphEdges: GraphEdge[]): Edge[] {
-  return graphEdges.map((e) => ({
-    id: e.id,
-    source: e.source,
-    target: e.target,
-    label: e.label,
-    type: 'smoothstep',
-    animated: e.edgeType === 'DEPENDS_ON' && !e.isDirect,
-    style: {
-      stroke: e.edgeType === 'IMPLEMENTS' ? '#10b981' : '#6366f1',
-      strokeWidth: e.edgeType === 'IMPLEMENTS' ? 2 : 1.5,
-      strokeDasharray: e.edgeType === 'IMPLEMENTS' ? undefined : '5,3',
-    },
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      color: e.edgeType === 'IMPLEMENTS' ? '#10b981' : '#6366f1',
-    },
-    labelStyle: { fontSize: 10, fill: '#6b7280', fontFamily: 'Plus Jakarta Sans' },
-    labelBgStyle: { fill: '#f9fafb', stroke: '#e5e7eb', strokeWidth: 1 },
-  }))
+  return graphEdges.map((e) => {
+    const s = EDGE_STYLE[e.edgeType] ?? EDGE_STYLE.DEPENDS_ON
+    return {
+      id: e.id,
+      source: e.source,
+      target: e.target,
+      label: e.label,
+      type: 'smoothstep',
+      animated: e.edgeType === 'DEPENDS_ON' && !e.isDirect,
+      style: {
+        stroke: s.stroke,
+        strokeWidth: s.width,
+        strokeDasharray: s.dash,
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: s.stroke,
+      },
+      labelStyle: { fontSize: 10, fill: '#6b7280', fontFamily: 'Plus Jakarta Sans' },
+      labelBgStyle: { fill: '#f9fafb', stroke: '#e5e7eb', strokeWidth: 1 },
+    }
+  })
 }
 
 interface GraphCanvasProps {

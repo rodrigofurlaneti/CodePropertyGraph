@@ -24,6 +24,8 @@ public static class DependencyInjection
         services.AddScoped<ICodeElementRepository, CodeElementRepository>();
         services.AddScoped<IElementImplementationRepository, ElementImplementationRepository>();
         services.AddScoped<IElementDependencyRepository, ElementDependencyRepository>();
+        services.AddScoped<IApiEndpointRepository, ApiEndpointRepository>();
+        services.AddScoped<IHandlerContractRepository, HandlerContractRepository>();
 
         return services;
     }

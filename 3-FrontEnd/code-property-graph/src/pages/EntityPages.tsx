@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { CrudPage, FormField, FormActions, inputStyle } from './CrudPage'
-import { layersApi, projectsApi, namespacesApi, directoriesApi, codeElementsApi } from '../api/graph'
+import { layersApi, projectsApi, namespacesApi, directoriesApi, codeElementsApi, apiEndpointsApi, handlerContractsApi } from '../api/graph'
 
 // ──────────────────────────────
 // LAYERS
@@ -221,6 +221,129 @@ function CodeElementForm({ onSave, onCancel }: { onSave: (data: unknown) => void
             Sealed
           </label>
         </div>
+      </div>
+      <FormActions onSave={() => mutation.mutate()} onCancel={onCancel} />
+    </div>
+  )
+}
+
+// ──────────────────────────────
+// API ENDPOINTS
+// ──────────────────────────────
+export function ApiEndpointsPage() {
+  return (
+    <CrudPage
+      title="API Endpoints — Contratos HTTP"
+      queryKey={['apiEndpoints']}
+      fetchAll={apiEndpointsApi.getAll}
+      deleteItem={apiEndpointsApi.delete}
+      columns={[
+        { key: 'httpVerb',        label: 'Verbo',       mono: true },
+        { key: 'route',           label: 'Rota',        mono: true },
+        { key: 'controllerName',  label: 'Controller' },
+        { key: 'methodName',      label: 'Método' },
+        { key: 'inputName',       label: 'Input DTO' },
+        { key: 'outputName',      label: 'Output DTO' },
+        { key: 'roles',           label: 'Roles' },
+      ]}
+      renderCreateForm={(onSave, onCancel) => <ApiEndpointForm onSave={onSave} onCancel={onCancel} />}
+    />
+  )
+}
+
+function ApiEndpointForm({ onSave, onCancel }: { onSave: (data: unknown) => void; onCancel: () => void }) {
+  const [form, setForm] = useState({
+    controllerId: 0, methodName: '', httpVerb: 'POST',
+    route: '', inputId: '' as number | '', outputId: '' as number | '', roles: '',
+  })
+  const mutation = useMutation({
+    mutationFn: () => apiEndpointsApi.create({
+      controllerId: form.controllerId,
+      methodName: form.methodName,
+      httpVerb: form.httpVerb,
+      route: form.route,
+      inputId: form.inputId !== '' ? form.inputId : undefined,
+      outputId: form.outputId !== '' ? form.outputId : undefined,
+      roles: form.roles || undefined,
+    }),
+    onSuccess: () => onSave({}),
+  })
+  const set = (k: string, v: unknown) => setForm((f) => ({ ...f, [k]: v }))
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 2fr', gap: 12 }}>
+        <FormField label="ControllerId *">
+          <input style={inputStyle} type="number" min={1} value={form.controllerId || ''} onChange={(e) => set('controllerId', +e.target.value)} />
+        </FormField>
+        <FormField label="Método *">
+          <input style={{ ...inputStyle, fontFamily: 'JetBrains Mono' }} value={form.methodName} onChange={(e) => set('methodName', e.target.value)} placeholder="GetAll" />
+        </FormField>
+        <FormField label="HTTP Verb *">
+          <select style={inputStyle} value={form.httpVerb} onChange={(e) => set('httpVerb', e.target.value)}>
+            <option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option><option>PATCH</option>
+          </select>
+        </FormField>
+        <FormField label="Rota *">
+          <input style={{ ...inputStyle, fontFamily: 'JetBrains Mono' }} value={form.route} onChange={(e) => set('route', e.target.value)} placeholder="api/companies/{id}" />
+        </FormField>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: 12 }}>
+        <FormField label="InputId (opcional)">
+          <input style={inputStyle} type="number" min={1} value={form.inputId} onChange={(e) => set('inputId', e.target.value ? +e.target.value : '')} placeholder="—" />
+        </FormField>
+        <FormField label="OutputId (opcional)">
+          <input style={inputStyle} type="number" min={1} value={form.outputId} onChange={(e) => set('outputId', e.target.value ? +e.target.value : '')} placeholder="—" />
+        </FormField>
+        <FormField label="Roles (opcional)">
+          <input style={inputStyle} value={form.roles} onChange={(e) => set('roles', e.target.value)} placeholder="ADMIN,COMPANYOWNER" />
+        </FormField>
+      </div>
+      <FormActions onSave={() => mutation.mutate()} onCancel={onCancel} />
+    </div>
+  )
+}
+
+// ──────────────────────────────
+// HANDLER CONTRACTS
+// ──────────────────────────────
+export function HandlerContractsPage() {
+  return (
+    <CrudPage
+      title="Handler Contracts — Fluxo Command → Handler → Response"
+      queryKey={['handlerContracts']}
+      fetchAll={handlerContractsApi.getAll}
+      deleteItem={handlerContractsApi.delete}
+      columns={[
+        { key: 'handlerName', label: 'Handler',    mono: true },
+        { key: 'inputName',   label: 'Input (Command/Query)', mono: true },
+        { key: 'outputName',  label: 'Output DTO', mono: true },
+      ]}
+      renderCreateForm={(onSave, onCancel) => <HandlerContractForm onSave={onSave} onCancel={onCancel} />}
+    />
+  )
+}
+
+function HandlerContractForm({ onSave, onCancel }: { onSave: (data: unknown) => void; onCancel: () => void }) {
+  const [form, setForm] = useState({ handlerId: 0, inputId: 0, outputId: 0 })
+  const mutation = useMutation({
+    mutationFn: () => handlerContractsApi.create(form),
+    onSuccess: () => onSave({}),
+  })
+  const set = (k: string, v: unknown) => setForm((f) => ({ ...f, [k]: v }))
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+        <FormField label="HandlerId *">
+          <input style={inputStyle} type="number" min={1} value={form.handlerId || ''} onChange={(e) => set('handlerId', +e.target.value)} />
+        </FormField>
+        <FormField label="InputId (Command/Query) *">
+          <input style={inputStyle} type="number" min={1} value={form.inputId || ''} onChange={(e) => set('inputId', +e.target.value)} />
+        </FormField>
+        <FormField label="OutputId (Response DTO) *">
+          <input style={inputStyle} type="number" min={1} value={form.outputId || ''} onChange={(e) => set('outputId', +e.target.value)} />
+        </FormField>
       </div>
       <FormActions onSave={() => mutation.mutate()} onCancel={onCancel} />
     </div>

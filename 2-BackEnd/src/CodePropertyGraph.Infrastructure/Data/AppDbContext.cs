@@ -15,6 +15,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<CodeElement> CodeElements => Set<CodeElement>();
     public DbSet<ElementImplementation> ElementImplementations => Set<ElementImplementation>();
     public DbSet<ElementDependency> ElementDependencies => Set<ElementDependency>();
+    public DbSet<ApiEndpoint> ApiEndpoints => Set<ApiEndpoint>();
+    public DbSet<HandlerContract> HandlerContracts => Set<HandlerContract>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,6 +27,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         modelBuilder.ApplyConfiguration(new CodeElementConfiguration());
         modelBuilder.ApplyConfiguration(new ElementImplementationConfiguration());
         modelBuilder.ApplyConfiguration(new ElementDependencyConfiguration());
+        modelBuilder.ApplyConfiguration(new ApiEndpointConfiguration());
+        modelBuilder.ApplyConfiguration(new HandlerContractConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }

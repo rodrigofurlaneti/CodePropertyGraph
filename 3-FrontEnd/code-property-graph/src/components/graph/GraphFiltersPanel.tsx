@@ -161,14 +161,22 @@ export function GraphFiltersPanel() {
           Legenda — Arestas
         </label>
         <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 30, height: 2, background: '#10b981' }} />
-            <span style={{ fontSize: 12, color: '#374151' }}>IMPLEMENTS</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 30, height: 2, background: '#6366f1', borderTop: '2px dashed #6366f1' }} />
-            <span style={{ fontSize: 12, color: '#374151' }}>DEPENDS_ON</span>
-          </div>
+          {[
+            { color: '#10b981', label: 'IMPLEMENTS',     dash: false },
+            { color: '#6366f1', label: 'DEPENDS_ON',     dash: true  },
+            { color: '#f97316', label: 'HTTP_INPUT',      dash: true  },
+            { color: '#fb923c', label: 'HTTP_OUTPUT',     dash: true  },
+            { color: '#8b5cf6', label: 'HANDLER_INPUT',  dash: true  },
+            { color: '#a78bfa', label: 'HANDLER_OUTPUT', dash: true  },
+          ].map(({ color, label, dash }) => (
+            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{
+                width: 30, height: 2, background: color,
+                borderTop: dash ? `2px dashed ${color}` : undefined,
+              }} />
+              <span style={{ fontSize: 11, color: '#374151', fontFamily: 'JetBrains Mono' }}>{label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

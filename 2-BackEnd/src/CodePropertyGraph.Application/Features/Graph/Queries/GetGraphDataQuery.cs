@@ -25,7 +25,9 @@ public sealed record GraphDataDto(
 public sealed class GetGraphDataQueryHandler(
     ICodeElementRepository codeElementRepository,
     IElementImplementationRepository implementationRepository,
-    IElementDependencyRepository dependencyRepository)
+    IElementDependencyRepository dependencyRepository,
+    IApiEndpointRepository apiEndpointRepository,
+    IHandlerContractRepository handlerContractRepository)
     : IRequestHandler<GetGraphDataQuery, GraphDataDto>
 {
     public async Task<GraphDataDto> Handle(GetGraphDataQuery request, CancellationToken cancellationToken)
@@ -38,8 +40,10 @@ public sealed class GetGraphDataQueryHandler(
 
         var elementIds = elements.Select(e => e.Id).ToHashSet();
 
-        var implementations = await implementationRepository.GetAllAsync(cancellationToken);
-        var dependencies = await dependencyRepository.GetAllAsync(cancellationToken);
+        var implementations    = await implementationRepository.GetAllAsync(cancellationToken);
+        var dependencies       = await dependencyRepository.GetAllAsync(cancellationToken);
+        var apiEndpoints       = await apiEndpointRepository.GetAllAsync(cancellationToken);
+        var handlerContracts   = await handlerContractRepository.GetAllAsync(cancellationToken);
 
         var nodes = elements.Select(e => new GraphNodeDto(
             e.Id.ToString(),
@@ -69,6 +73,46 @@ public sealed class GetGraphDataQueryHandler(
                 $"dep-{dep.SourceElementId}-{dep.TargetElementId}-{dep.DependencyType}",
                 dep.SourceElementId.ToString(), dep.TargetElementId.ToString(),
                 "DEPENDS_ON", dep.DependencyType, dep.IsDirect));
+        }
+
+        // Arestas HTTP_INPUT / HTTP_OUTPUT (Controller ↔ DTOs via ApiEndpoint)
+        foreach (var ep in apiEndpoints)
+        {
+            if (ep.InputId.HasValue && elementIds.Contains(ep.ControllerId) && elementIds.Contains(ep.InputId.Value))
+            {
+                edges.Add(new GraphEdgeDto(
+                    $"ep-input-{ep.Id}",
+                    ep.ControllerId.ToString(), ep.InputId.Value.ToString(),
+                    "HTTP_INPUT", $"{ep.HttpVerb} ↓ input", true));
+            }
+
+            if (ep.OutputId.HasValue && elementIds.Contains(ep.ControllerId) && elementIds.Contains(ep.OutputId.Value))
+            {
+                edges.Add(new GraphEdgeDto(
+                    $"ep-output-{ep.Id}",
+                    ep.ControllerId.ToString(), ep.OutputId.Value.ToString(),
+                    "HTTP_OUTPUT", $"{ep.HttpVerb} ↑ output", true));
+            }
+        }
+
+        // Arestas HANDLER_INPUT / HANDLER_OUTPUT (Handler ↔ Command/Response)
+        foreach (var hc in handlerContracts)
+        {
+            if (elementIds.Contains(hc.HandlerId) && elementIds.Contains(hc.InputId))
+            {
+                edges.Add(new GraphEdgeDto(
+                    $"hc-input-{hc.HandlerId}",
+                    hc.HandlerId.ToString(), hc.InputId.ToString(),
+                    "HANDLER_INPUT", "handles", true));
+            }
+
+            if (elementIds.Contains(hc.HandlerId) && elementIds.Contains(hc.OutputId))
+            {
+                edges.Add(new GraphEdgeDto(
+                    $"hc-output-{hc.HandlerId}",
+                    hc.HandlerId.ToString(), hc.OutputId.ToString(),
+                    "HANDLER_OUTPUT", "returns", true));
+            }
         }
 
         return new GraphDataDto(nodes, edges);

@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Network, Layers, FolderKanban, Package, FolderOpen, Code2, GitMerge, GitBranch, AlertOctagon } from 'lucide-react'
+import { Network, Layers, FolderKanban, Package, FolderOpen, Code2, GitMerge, GitBranch, AlertOctagon, Route, Workflow } from 'lucide-react'
 
 const NAV_ITEMS = [
   { to: '/',                    icon: Network,       label: 'Grafo',           group: 'visualização' },
@@ -11,12 +11,15 @@ const NAV_ITEMS = [
   { to: '/code-elements',       icon: Code2,         label: 'Code Elements',   group: 'entidades' },
   { to: '/implementations',     icon: GitMerge,      label: 'Implementações',  group: 'arestas' },
   { to: '/dependencies',        icon: GitBranch,     label: 'Dependências',    group: 'arestas' },
+  { to: '/api-endpoints',       icon: Route,         label: 'API Endpoints',   group: 'contratos' },
+  { to: '/handler-contracts',   icon: Workflow,      label: 'Handler Contracts', group: 'contratos' },
 ]
 
 const GROUPS: Record<string, string> = {
   visualização: 'Visualização',
   entidades: 'Entidades (Nós)',
   arestas: 'Relacionamentos (Arestas)',
+  contratos: 'Contratos (HTTP / CQRS)',
 }
 
 export function AppShell() {
