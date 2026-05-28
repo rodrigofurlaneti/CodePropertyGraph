@@ -5,8 +5,14 @@
 ---
 
 ![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/Project.jpg?raw=true)
+
+## Arquitetura DDD
 ![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/4-Doc/ArqDDD.png?raw=true)
+
+## Grafo
 ![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/4-Doc/Grafo.png?raw=true)
+
+## Camadas DDD
 ![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/4-Doc/LayerFocus.png?raw=true)
 
 
