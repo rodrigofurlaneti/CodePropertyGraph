@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { AppShell } from './components/layout/AppShell'
 import { GraphPage } from './pages/GraphPage'
+import { DddArchitecturePage } from './pages/DddArchitecturePage'
+import { DddSubdivisionPage } from './pages/DddSubdivisionPage'
 import { ViolationsPage } from './pages/ViolationsPage'
 import {
   LayersPage, ProjectsPage, NamespacesPage,
@@ -26,6 +28,8 @@ export function App() {
         <Routes>
           <Route element={<AppShell />}>
             <Route index element={<GraphPage />} />
+            <Route path="ddd" element={<DddArchitecturePage />} />
+            <Route path="ddd-sub" element={<DddSubdivisionPage />} />
             <Route path="violations" element={<ViolationsPage />} />
             <Route path="layers" element={<LayersPage />} />
             <Route path="projects" element={<ProjectsPage />} />

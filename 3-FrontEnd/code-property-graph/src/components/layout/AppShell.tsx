@@ -1,23 +1,25 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Network, Layers, FolderKanban, Package, FolderOpen, Code2, GitMerge, GitBranch, AlertOctagon, Route, Workflow } from 'lucide-react'
+import { Network, Layers, FolderKanban, Package, FolderOpen, Code2, GitMerge, GitBranch, AlertOctagon, Route, Workflow, CircleDot } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { to: '/',                    icon: Network,       label: 'Grafo',           group: 'visualização' },
-  { to: '/violations',          icon: AlertOctagon,  label: 'Violações',       group: 'visualização' },
-  { to: '/layers',              icon: Layers,        label: 'Layers',          group: 'entidades' },
-  { to: '/projects',            icon: FolderKanban,  label: 'Projetos',        group: 'entidades' },
-  { to: '/namespaces',          icon: Package,       label: 'Namespaces',      group: 'entidades' },
-  { to: '/directories',         icon: FolderOpen,    label: 'Diretórios',      group: 'entidades' },
-  { to: '/code-elements',       icon: Code2,         label: 'Code Elements',   group: 'entidades' },
-  { to: '/implementations',     icon: GitMerge,      label: 'Implementações',  group: 'arestas' },
-  { to: '/dependencies',        icon: GitBranch,     label: 'Dependências',    group: 'arestas' },
-  { to: '/api-endpoints',       icon: Route,         label: 'API Endpoints',   group: 'contratos' },
-  { to: '/handler-contracts',   icon: Workflow,      label: 'Handler Contracts', group: 'contratos' },
+  { to: '/',                  icon: Network,      label: 'Grafo',            group: 'visualizacao' },
+  { to: '/ddd',               icon: CircleDot,    label: 'Arq. DDD',         group: 'visualizacao' },
+  { to: '/ddd-sub',           icon: Layers,       label: 'DDD Subdivis.',    group: 'visualizacao' },
+  { to: '/violations',        icon: AlertOctagon, label: 'Violations',       group: 'visualizacao' },
+  { to: '/layers',            icon: Layers,       label: 'Layers',           group: 'entidades' },
+  { to: '/projects',          icon: FolderKanban, label: 'Projetos',         group: 'entidades' },
+  { to: '/namespaces',        icon: Package,      label: 'Namespaces',       group: 'entidades' },
+  { to: '/directories',       icon: FolderOpen,   label: 'Diretorios',       group: 'entidades' },
+  { to: '/code-elements',     icon: Code2,        label: 'Code Elements',    group: 'entidades' },
+  { to: '/implementations',   icon: GitMerge,     label: 'Implementacoes',   group: 'arestas' },
+  { to: '/dependencies',      icon: GitBranch,    label: 'Dependencias',     group: 'arestas' },
+  { to: '/api-endpoints',     icon: Route,        label: 'API Endpoints',    group: 'contratos' },
+  { to: '/handler-contracts', icon: Workflow,     label: 'Handler Contracts',group: 'contratos' },
 ]
 
 const GROUPS: Record<string, string> = {
-  visualização: 'Visualização',
-  entidades: 'Entidades (Nós)',
+  visualizacao: 'Visualizacao',
+  entidades: 'Entidades (Nos)',
   arestas: 'Relacionamentos (Arestas)',
   contratos: 'Contratos (HTTP / CQRS)',
 }

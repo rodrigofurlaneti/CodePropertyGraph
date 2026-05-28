@@ -1,4 +1,4 @@
--- ============================================================
+﻿-- ============================================================
 -- CodePropertyGraph INSERTs - OrderManager
 -- Estratégia: ADITIVO — insere apenas o que ainda não existe.
 -- Seguro para bancos com dados de outros projetos.
