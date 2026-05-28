@@ -1,6 +1,7 @@
 using CodePropertyGraph.Application.Common;
 using CodePropertyGraph.Domain.Entities;
 using CodePropertyGraph.Domain.Interfaces;
+using CodePropertyGraph.Domain.ValueObjects;
 using FluentValidation;
 using MediatR;
 
@@ -13,13 +14,20 @@ public sealed record CreateCodeElementCommand(
 
 public sealed class CreateCodeElementCommandValidator : AbstractValidator<CreateCodeElementCommand>
 {
-    private static readonly string[] ValidTypes = ["Class", "Interface", "Record", "Enum"];
-
     public CreateCodeElementCommandValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
-        RuleFor(x => x.ElementType).NotEmpty().Must(t => ValidTypes.Contains(t))
-            .WithMessage("ElementType deve ser: Class, Interface, Record ou Enum");
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .MaximumLength(ElementName.MaxLength)
+            .WithMessage($"Name nao pode exceder {ElementName.MaxLength} caracteres.");
+
+        RuleFor(x => x.ElementType)
+            .NotEmpty()
+            .Must(Domain.ValueObjects.ElementType.IsValid)
+            .WithMessage(
+                $"ElementType invalido. Valores aceitos: " +
+                $"{string.Join(", ", Domain.ValueObjects.ElementType.AllValues)}.");
+
         RuleFor(x => x.LayerId).GreaterThan(0);
         RuleFor(x => x.ProjectId).GreaterThan(0);
         RuleFor(x => x.NamespaceId).GreaterThan(0);
