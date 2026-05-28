@@ -7,6 +7,7 @@ import { DddArchitecturePage } from './pages/DddArchitecturePage'
 import { DddSubdivisionPage } from './pages/DddSubdivisionPage'
 import { LayerDetailPage } from './pages/LayerDetailPage'
 import { ViolationsPage } from './pages/ViolationsPage'
+import { SingleLayerPage } from './pages/SingleLayerPage'
 import {
   LayersPage, ProjectsPage, NamespacesPage,
   DirectoriesPage, CodeElementsPage,
@@ -33,6 +34,7 @@ export function App() {
             <Route path="ddd-sub" element={<DddSubdivisionPage />} />
             <Route path="layer-detail" element={<LayerDetailPage />} />
             <Route path="violations" element={<ViolationsPage />} />
+            <Route path="layer/:layerName" element={<SingleLayerPage />} />
             <Route path="layers" element={<LayersPage />} />
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="namespaces" element={<NamespacesPage />} />

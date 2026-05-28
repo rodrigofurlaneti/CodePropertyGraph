@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Network, Layers, FolderKanban, Package, FolderOpen, Code2, GitMerge, GitBranch, AlertOctagon, Route, Workflow, CircleDot, LayoutGrid } from 'lucide-react'
+import { Network, Layers, FolderKanban, Package, FolderOpen, Code2, GitMerge, GitBranch, AlertOctagon, Route, Workflow, CircleDot, LayoutGrid, Box } from 'lucide-react'
 
 const NAV_ITEMS = [
   { to: '/',                  icon: Network,      label: 'Grafo',            group: 'visualizacao' },
@@ -7,6 +7,10 @@ const NAV_ITEMS = [
   { to: '/ddd-sub',           icon: Layers,       label: 'DDD Subdivis.',    group: 'visualizacao' },
   { to: '/layer-detail',      icon: LayoutGrid,   label: 'Layer Focus',      group: 'visualizacao' },
   { to: '/violations',        icon: AlertOctagon, label: 'Violations',       group: 'visualizacao' },
+  { to: '/layer/domain',         icon: Box,          label: 'Domain',           group: 'camadasddd' },
+  { to: '/layer/application',    icon: Box,          label: 'Application',      group: 'camadasddd' },
+  { to: '/layer/infrastructure', icon: Box,          label: 'Infrastructure',   group: 'camadasddd' },
+  { to: '/layer/api',            icon: Box,          label: 'Api',              group: 'camadasddd' },
   { to: '/layers',            icon: Layers,       label: 'Layers',           group: 'entidades' },
   { to: '/projects',          icon: FolderKanban, label: 'Projetos',         group: 'entidades' },
   { to: '/namespaces',        icon: Package,      label: 'Namespaces',       group: 'entidades' },
@@ -18,11 +22,19 @@ const NAV_ITEMS = [
   { to: '/handler-contracts', icon: Workflow,     label: 'Handler Contracts',group: 'contratos' },
 ]
 
+const LAYER_DOT: Record<string, string> = {
+  '/layer/domain':         '#7c3aed',
+  '/layer/application':    '#1d4ed8',
+  '/layer/infrastructure': '#0f766e',
+  '/layer/api':            '#c2410c',
+}
+
 const GROUPS: Record<string, string> = {
   visualizacao: 'Visualizacao',
-  entidades: 'Entidades (Nos)',
-  arestas: 'Relacionamentos (Arestas)',
-  contratos: 'Contratos (HTTP / CQRS)',
+  camadasddd:   'Camadas DDD',
+  entidades:    'Entidades (Nos)',
+  arestas:      'Relacionamentos (Arestas)',
+  contratos:    'Contratos (HTTP / CQRS)',
 }
 
 export function AppShell() {
@@ -63,25 +75,35 @@ export function AppShell() {
                 }}>
                   {groupLabel}
                 </div>
-                {items.map(({ to, icon: Icon, label }) => (
-                  <NavLink
-                    key={to}
-                    to={to}
-                    end={to === '/'}
-                    style={({ isActive }) => ({
-                      display: 'flex', alignItems: 'center', gap: 10,
-                      padding: '8px 10px', borderRadius: 8,
-                      textDecoration: 'none', fontSize: 13,
-                      marginBottom: 2, transition: 'all 0.15s',
-                      background: isActive ? '#1e293b' : 'transparent',
-                      color: isActive ? '#f8fafc' : '#94a3b8',
-                      fontWeight: isActive ? 600 : 400,
-                    })}
-                  >
-                    <Icon size={15} />
-                    {label}
-                  </NavLink>
-                ))}
+                {items.map(({ to, icon: Icon, label }) => {
+                  const dot = LAYER_DOT[to]
+                  return (
+                    <NavLink
+                      key={to}
+                      to={to}
+                      end={to === '/'}
+                      style={({ isActive }) => ({
+                        display: 'flex', alignItems: 'center', gap: 10,
+                        padding: '8px 10px', borderRadius: 8,
+                        textDecoration: 'none', fontSize: 13,
+                        marginBottom: 2, transition: 'all 0.15s',
+                        background: isActive ? '#1e293b' : 'transparent',
+                        color: isActive ? '#f8fafc' : '#94a3b8',
+                        fontWeight: isActive ? 600 : 400,
+                      })}
+                    >
+                      {dot ? (
+                        <span style={{
+                          width: 10, height: 10, borderRadius: 3,
+                          background: dot, flexShrink: 0, display: 'inline-block',
+                        }} />
+                      ) : (
+                        <Icon size={15} />
+                      )}
+                      {label}
+                    </NavLink>
+                  )
+                })}
               </div>
             )
           })}
