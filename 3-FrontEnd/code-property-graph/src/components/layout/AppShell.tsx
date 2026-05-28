@@ -1,10 +1,11 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Network, Layers, FolderKanban, Package, FolderOpen, Code2, GitMerge, GitBranch, AlertOctagon, Route, Workflow, CircleDot } from 'lucide-react'
+import { Network, Layers, FolderKanban, Package, FolderOpen, Code2, GitMerge, GitBranch, AlertOctagon, Route, Workflow, CircleDot, LayoutGrid } from 'lucide-react'
 
 const NAV_ITEMS = [
   { to: '/',                  icon: Network,      label: 'Grafo',            group: 'visualizacao' },
   { to: '/ddd',               icon: CircleDot,    label: 'Arq. DDD',         group: 'visualizacao' },
   { to: '/ddd-sub',           icon: Layers,       label: 'DDD Subdivis.',    group: 'visualizacao' },
+  { to: '/layer-detail',      icon: LayoutGrid,   label: 'Layer Focus',      group: 'visualizacao' },
   { to: '/violations',        icon: AlertOctagon, label: 'Violations',       group: 'visualizacao' },
   { to: '/layers',            icon: Layers,       label: 'Layers',           group: 'entidades' },
   { to: '/projects',          icon: FolderKanban, label: 'Projetos',         group: 'entidades' },
@@ -27,12 +28,10 @@ const GROUPS: Record<string, string> = {
 export function AppShell() {
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'Plus Jakarta Sans, system-ui', overflow: 'hidden' }}>
-      {/* Sidebar */}
       <nav style={{
         width: 220, background: '#0f172a', display: 'flex',
         flexDirection: 'column', flexShrink: 0, overflowY: 'auto',
       }}>
-        {/* Logo */}
         <div style={{ padding: '20px 16px', borderBottom: '1px solid #1e293b' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
@@ -52,7 +51,6 @@ export function AppShell() {
           </div>
         </div>
 
-        {/* Navigation */}
         <div style={{ flex: 1, padding: '12px 8px' }}>
           {Object.entries(GROUPS).map(([groupKey, groupLabel]) => {
             const items = NAV_ITEMS.filter((i) => i.group === groupKey)
@@ -89,7 +87,6 @@ export function AppShell() {
           })}
         </div>
 
-        {/* Footer */}
         <div style={{ padding: '12px 16px', borderTop: '1px solid #1e293b' }}>
           <div style={{ fontSize: 10, color: '#475569' }}>
             API: <span style={{ color: '#6366f1', fontFamily: 'JetBrains Mono' }}>localhost:5000</span>
@@ -97,7 +94,6 @@ export function AppShell() {
         </div>
       </nav>
 
-      {/* Main content */}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#f8fafc' }}>
         <Outlet />
       </main>

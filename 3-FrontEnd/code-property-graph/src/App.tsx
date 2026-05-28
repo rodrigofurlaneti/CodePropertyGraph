@@ -5,6 +5,7 @@ import { AppShell } from './components/layout/AppShell'
 import { GraphPage } from './pages/GraphPage'
 import { DddArchitecturePage } from './pages/DddArchitecturePage'
 import { DddSubdivisionPage } from './pages/DddSubdivisionPage'
+import { LayerDetailPage } from './pages/LayerDetailPage'
 import { ViolationsPage } from './pages/ViolationsPage'
 import {
   LayersPage, ProjectsPage, NamespacesPage,
@@ -30,6 +31,7 @@ export function App() {
             <Route index element={<GraphPage />} />
             <Route path="ddd" element={<DddArchitecturePage />} />
             <Route path="ddd-sub" element={<DddSubdivisionPage />} />
+            <Route path="layer-detail" element={<LayerDetailPage />} />
             <Route path="violations" element={<ViolationsPage />} />
             <Route path="layers" element={<LayersPage />} />
             <Route path="projects" element={<ProjectsPage />} />
