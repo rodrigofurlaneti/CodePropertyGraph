@@ -1,10 +1,13 @@
-# Code Property Graph
+﻿# Code Property Graph
 
 > Visualize a arquitetura do seu software como um **Knowledge Graph** interativo — entidades como nós, relacionamentos como arestas, com análise de dependências e detecção de violações de Clean Architecture em tempo real.
 
 ---
 
 ![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/Project.jpg?raw=true)
+![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/4-Doc/ArqDDD.png?raw=true)
+![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/4-Doc/Grafo.png?raw=true)
+![alt text](https://github.com/rodrigofurlaneti/CodePropertyGraph/blob/main/4-Doc/LayerFocus.png?raw=true)
 
 
 ## Visão Geral
